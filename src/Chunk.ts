@@ -5,7 +5,7 @@
 
 import * as THREE from 'three';
 import { createNoise2D } from 'simplex-noise';
-import { ChunkCoord, WorldConfig } from './types';
+import type { ChunkCoord, WorldConfig } from './types';
 
 // Seeded random number generator
 function seededRandom(seed: number): () => number {

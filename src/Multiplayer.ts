@@ -10,7 +10,7 @@
 
 import * as THREE from 'three';
 import { io, Socket } from 'socket.io-client';
-import { PlayerState } from './types';
+import type { PlayerState } from './types';
 
 // Simple player avatar (just a floating figure for now)
 function createPlayerAvatar(): THREE.Group {

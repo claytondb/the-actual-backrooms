@@ -5,7 +5,8 @@
 
 import * as THREE from 'three';
 import { Chunk } from './Chunk';
-import { ChunkCoord, WorldConfig, DEFAULT_CONFIG } from './types';
+import type { ChunkCoord, WorldConfig } from './types';
+import { DEFAULT_CONFIG } from './types';
 
 export class World {
   private scene: THREE.Scene;
