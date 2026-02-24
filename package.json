@@ -1,0 +1,24 @@
+{
+  "name": "the-actual-backrooms",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "An infinite procedural liminal space exploration game",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "server": "cd server && npm start",
+    "server:install": "cd server && npm install"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "@types/three": "^0.183.1",
+    "simplex-noise": "^4.0.3",
+    "socket.io-client": "^4.8.3",
+    "three": "^0.183.1"
+  }
+}

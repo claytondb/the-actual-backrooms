@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Actual Backrooms</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        overflow: hidden;
+        background: #000;
+        font-family: 'VT323', monospace;
+      }
+      
+      #game-canvas {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+      }
+      
+      #hud {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        color: #c4b896;
+        font-size: 18px;
+        text-shadow: 0 0 10px rgba(196, 184, 150, 0.5);
+        z-index: 100;
+        pointer-events: none;
+      }
+      
+      #coordinates {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px 15px;
+        border: 1px solid rgba(196, 184, 150, 0.3);
+      }
+      
+      #players-online {
+        margin-top: 10px;
+        font-size: 14px;
+        opacity: 0.7;
+      }
+      
+      #crosshair {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 4px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 100;
+      }
+      
+      #start-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #1a1a0e;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+        color: #c4b896;
+      }
+      
+      #start-screen h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        text-shadow: 0 0 20px rgba(196, 184, 150, 0.5);
+      }
+      
+      #start-screen p {
+        font-size: 18px;
+        opacity: 0.7;
+        margin-bottom: 40px;
+      }
+      
+      #start-btn {
+        font-family: 'VT323', monospace;
+        font-size: 24px;
+        padding: 15px 40px;
+        background: transparent;
+        border: 2px solid #c4b896;
+        color: #c4b896;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      
+      #start-btn:hover {
+        background: #c4b896;
+        color: #1a1a0e;
+      }
+      
+      .controls-hint {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        color: #c4b896;
+        font-size: 14px;
+        opacity: 0.5;
+        z-index: 100;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="start-screen">
+      <h1>THE ACTUAL BACKROOMS</h1>
+      <p>An infinite liminal space</p>
+      <button id="start-btn">ENTER</button>
+    </div>
+    
+    <canvas id="game-canvas"></canvas>
+    
+    <div id="hud">
+      <div id="coordinates">
+        X: <span id="coord-x">0</span><br>
+        Y: <span id="coord-y">0</span><br>
+        Z: <span id="coord-z">0</span>
+      </div>
+      <div id="players-online">
+        <span id="player-count">1</span> exploring
+      </div>
+    </div>
+    
+    <div id="crosshair"></div>
+    
+    <div class="controls-hint">
+      WASD - Move | Mouse - Look | Shift - Run
+    </div>
+    
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

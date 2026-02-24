@@ -1,0 +1,12 @@
+{
+  "name": "backrooms-server",
+  "version": "1.0.0",
+  "description": "Multiplayer server for The Actual Backrooms",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "socket.io": "^4.7.4"
+  }
+}
