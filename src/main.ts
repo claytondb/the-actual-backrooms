@@ -9,6 +9,7 @@ import * as THREE from 'three';
 import { World } from './World';
 import { Player } from './Player';
 import { Multiplayer } from './Multiplayer';
+import { TouchControls } from './TouchControls';
 
 class BackroomsGame {
   private renderer: THREE.WebGLRenderer;
@@ -16,6 +17,7 @@ class BackroomsGame {
   private world: World;
   private player: Player;
   private multiplayer: Multiplayer;
+  private touchControls: TouchControls | null = null;
   
   private clock = new THREE.Clock();
   private isRunning = false;
@@ -84,8 +86,13 @@ class BackroomsGame {
   private start(): void {
     this.isRunning = true;
     
-    // Request pointer lock
-    this.player.requestPointerLock();
+    // Initialize touch controls for mobile
+    this.touchControls = new TouchControls();
+    
+    // Request pointer lock (desktop only)
+    if (!this.touchControls.isTouchDevice()) {
+      this.player.requestPointerLock();
+    }
     
     // Initialize audio (must be after user interaction)
     this.initAudio();
@@ -145,6 +152,12 @@ class BackroomsGame {
     requestAnimationFrame(() => this.animate());
     
     const deltaTime = Math.min(this.clock.getDelta(), 0.1);
+    
+    // Apply touch input
+    if (this.touchControls) {
+      this.player.applyTouchInput(this.touchControls.input);
+      this.touchControls.update();
+    }
     
     // Update player
     this.player.update(deltaTime);

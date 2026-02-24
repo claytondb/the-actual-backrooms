@@ -1,8 +1,10 @@
 /**
  * Player - First person controller with mouse look and WASD movement
+ * Also supports touch input for mobile devices
  */
 
 import * as THREE from 'three';
+import type { TouchInput } from './TouchControls';
 
 export class Player {
   public readonly camera: THREE.PerspectiveCamera;
@@ -17,6 +19,10 @@ export class Player {
   private moveLeft = false;
   private moveRight = false;
   private isRunning = false;
+  
+  // Touch input
+  private touchMoveX = 0;
+  private touchMoveZ = 0;
   
   // Settings
   private readonly walkSpeed = 4;
@@ -64,6 +70,23 @@ export class Player {
   
   requestPointerLock(): void {
     document.body.requestPointerLock();
+  }
+  
+  /**
+   * Apply touch input (called each frame)
+   */
+  applyTouchInput(input: TouchInput): void {
+    this.touchMoveX = input.moveX;
+    this.touchMoveZ = input.moveZ;
+    
+    // Apply look
+    if (input.lookX !== 0 || input.lookY !== 0) {
+      this.euler.setFromQuaternion(this.camera.quaternion);
+      this.euler.y -= input.lookX;
+      this.euler.x -= input.lookY;
+      this.euler.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.euler.x));
+      this.camera.quaternion.setFromEuler(this.euler);
+    }
   }
   
   private onKeyDown(event: KeyboardEvent): void {
@@ -134,7 +157,7 @@ export class Player {
   }
   
   update(deltaTime: number): void {
-    // Get movement direction
+    // Get movement direction from keyboard
     const direction = new THREE.Vector3();
     const speed = this.isRunning ? this.runSpeed : this.walkSpeed;
     
@@ -142,6 +165,10 @@ export class Player {
     if (this.moveBackward) direction.z += 1;
     if (this.moveLeft) direction.x -= 1;
     if (this.moveRight) direction.x += 1;
+    
+    // Add touch input
+    direction.x += this.touchMoveX;
+    direction.z += this.touchMoveZ;
     
     direction.normalize();
     
