@@ -103,6 +103,17 @@ class BackroomsGame {
     // Force initial world generation
     this.world.forceUpdate(this.player.position);
     
+    // Debug: Add a visible reference cube near spawn
+    const debugGeo = new THREE.BoxGeometry(2, 2, 2);
+    const debugMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const debugCube = new THREE.Mesh(debugGeo, debugMat);
+    debugCube.position.set(5, 1, 5);
+    this.scene.add(debugCube);
+    
+    console.log('Game started, chunks loaded:', this.world.getChunkCount());
+    console.log('Player position:', this.player.position);
+    console.log('Camera position:', this.player.camera.position);
+    
     // Start game loop
     this.animate();
   }

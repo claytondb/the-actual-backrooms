@@ -100,9 +100,15 @@
         transition: all 0.3s;
       }
       
-      #start-btn:hover {
+      #start-btn:hover,
+      #start-btn:active {
         background: #c4b896;
         color: #1a1a0e;
+      }
+      
+      /* Prevent iOS zooming on double tap */
+      * {
+        touch-action: manipulation;
       }
       
       .controls-hint {

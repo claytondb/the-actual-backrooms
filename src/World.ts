@@ -18,13 +18,17 @@ export class World {
     this.scene = scene;
     this.config = { ...DEFAULT_CONFIG, ...config };
     
-    // Add ambient light
-    const ambient = new THREE.AmbientLight(0xfff8dc, 0.3);
+    // Add ambient light - bright enough to see on mobile
+    const ambient = new THREE.AmbientLight(0xfff8dc, 0.8);
     this.scene.add(ambient);
     
-    // Add slight fog for atmosphere
-    this.scene.fog = new THREE.FogExp2(0x1a1810, 0.015);
-    this.scene.background = new THREE.Color(0x1a1810);
+    // Add hemisphere light for better visibility
+    const hemi = new THREE.HemisphereLight(0xfff8dc, 0x8b7355, 0.6);
+    this.scene.add(hemi);
+    
+    // Add slight fog for atmosphere (lighter color)
+    this.scene.fog = new THREE.FogExp2(0x3a3820, 0.012);
+    this.scene.background = new THREE.Color(0x2a2818);
   }
   
   private chunkKey(coord: ChunkCoord): string {
