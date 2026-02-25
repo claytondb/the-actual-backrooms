@@ -44,6 +44,7 @@ export class Player {
     
     this.position = new THREE.Vector3(0, this.eyeHeight, 0);
     this.camera.position.copy(this.position);
+    this.camera.lookAt(0, this.eyeHeight, 10); // Look forward along +Z
     
     this.setupEventListeners();
   }

@@ -36,10 +36,20 @@ class BackroomsGame {
     // Get canvas
     const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
     
+    // Check WebGL support
+    const testCanvas = document.createElement('canvas');
+    const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+    if (!gl) {
+      alert('WebGL not supported on this device');
+      return;
+    }
+    
     // Setup renderer
     this.renderer = new THREE.WebGLRenderer({ 
       canvas,
-      antialias: true,
+      antialias: false, // Disable for mobile performance
+      alpha: false,
+      powerPreference: 'default',
     });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -50,6 +60,7 @@ class BackroomsGame {
     
     // Create scene
     this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x87CEEB); // Sky blue - very visible
     
     // Initialize systems
     this.player = new Player();
@@ -100,19 +111,47 @@ class BackroomsGame {
     // Connect to multiplayer server (fails silently if not available)
     this.multiplayer.connect();
     
-    // Force initial world generation
+    // Add simple test geometry first (MeshBasicMaterial doesn't need lights)
+    // Floor
+    const floorGeo = new THREE.PlaneGeometry(100, 100);
+    const floorMat = new THREE.MeshBasicMaterial({ color: 0x8b7355, side: THREE.DoubleSide });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = 0;
+    this.scene.add(floor);
+    
+    // Ceiling
+    const ceilingMat = new THREE.MeshBasicMaterial({ color: 0xc4b896, side: THREE.DoubleSide });
+    const ceiling = new THREE.Mesh(floorGeo.clone(), ceilingMat);
+    ceiling.rotation.x = Math.PI / 2;
+    ceiling.position.y = 3;
+    this.scene.add(ceiling);
+    
+    // Some walls
+    const wallGeo = new THREE.BoxGeometry(10, 3, 0.2);
+    const wallMat = new THREE.MeshBasicMaterial({ color: 0xc4a84b });
+    
+    for (let i = 0; i < 5; i++) {
+      const wall = new THREE.Mesh(wallGeo, wallMat);
+      wall.position.set(i * 8 - 16, 1.5, 10);
+      this.scene.add(wall);
+      
+      const wall2 = new THREE.Mesh(wallGeo.clone(), wallMat);
+      wall2.position.set(i * 8 - 16, 1.5, -10);
+      this.scene.add(wall2);
+    }
+    
+    // Red cube for reference
+    const cubeGeo = new THREE.BoxGeometry(1, 1, 1);
+    const cubeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const cube = new THREE.Mesh(cubeGeo, cubeMat);
+    cube.position.set(0, 0.5, 3);
+    this.scene.add(cube);
+    
+    // Force initial world generation (procedural chunks)
     this.world.forceUpdate(this.player.position);
     
-    // Debug: Add a visible reference cube near spawn
-    const debugGeo = new THREE.BoxGeometry(2, 2, 2);
-    const debugMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const debugCube = new THREE.Mesh(debugGeo, debugMat);
-    debugCube.position.set(5, 1, 5);
-    this.scene.add(debugCube);
-    
-    console.log('Game started, chunks loaded:', this.world.getChunkCount());
-    console.log('Player position:', this.player.position);
-    console.log('Camera position:', this.player.camera.position);
+    console.log('Scene children:', this.scene.children.length);
     
     // Start game loop
     this.animate();
