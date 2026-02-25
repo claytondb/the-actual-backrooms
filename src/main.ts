@@ -44,23 +44,24 @@ class BackroomsGame {
       throw new Error('WebGL not supported');
     }
     
-    // Setup renderer
+    // Setup renderer with realistic settings
     this.renderer = new THREE.WebGLRenderer({ 
       canvas,
-      antialias: false, // Disable for mobile performance
+      antialias: true,
       alpha: false,
-      powerPreference: 'default',
+      powerPreference: 'high-performance',
     });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 0.8;
+    this.renderer.toneMappingExposure = 1.0;
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     
-    // Create scene
+    // Create scene with atmospheric background
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x87CEEB); // Sky blue - very visible
+    this.scene.background = new THREE.Color(0x1a1810); // Dark murky yellow-brown
     
     // Initialize systems
     this.player = new Player();
@@ -111,47 +112,15 @@ class BackroomsGame {
     // Connect to multiplayer server (fails silently if not available)
     this.multiplayer.connect();
     
-    // Add simple test geometry first (MeshBasicMaterial doesn't need lights)
-    // Floor
-    const floorGeo = new THREE.PlaneGeometry(100, 100);
-    const floorMat = new THREE.MeshBasicMaterial({ color: 0x8b7355, side: THREE.DoubleSide });
-    const floor = new THREE.Mesh(floorGeo, floorMat);
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.y = 0;
-    this.scene.add(floor);
+    // Add realistic lighting
+    const ambientLight = new THREE.AmbientLight(0xfff8dc, 0.15);
+    this.scene.add(ambientLight);
     
-    // Ceiling
-    const ceilingMat = new THREE.MeshBasicMaterial({ color: 0xc4b896, side: THREE.DoubleSide });
-    const ceiling = new THREE.Mesh(floorGeo.clone(), ceilingMat);
-    ceiling.rotation.x = Math.PI / 2;
-    ceiling.position.y = 3;
-    this.scene.add(ceiling);
-    
-    // Some walls
-    const wallGeo = new THREE.BoxGeometry(10, 3, 0.2);
-    const wallMat = new THREE.MeshBasicMaterial({ color: 0xc4a84b });
-    
-    for (let i = 0; i < 5; i++) {
-      const wall = new THREE.Mesh(wallGeo, wallMat);
-      wall.position.set(i * 8 - 16, 1.5, 10);
-      this.scene.add(wall);
-      
-      const wall2 = new THREE.Mesh(wallGeo.clone(), wallMat);
-      wall2.position.set(i * 8 - 16, 1.5, -10);
-      this.scene.add(wall2);
-    }
-    
-    // Red cube for reference
-    const cubeGeo = new THREE.BoxGeometry(1, 1, 1);
-    const cubeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const cube = new THREE.Mesh(cubeGeo, cubeMat);
-    cube.position.set(0, 0.5, 3);
-    this.scene.add(cube);
+    // Fog for depth
+    this.scene.fog = new THREE.Fog(0x1a1810, 5, 40);
     
     // Force initial world generation (procedural chunks)
     this.world.forceUpdate(this.player.position);
-    
-    console.log('Scene children:', this.scene.children.length);
     
     // Start game loop
     this.animate();

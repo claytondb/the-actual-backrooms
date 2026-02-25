@@ -281,21 +281,22 @@ export class Chunk {
         // Skip some lights randomly (broken/missing)
         if (random() > 0.85) continue;
         
-        // Light fixture geometry
-        const fixtureGeo = new THREE.BoxGeometry(1.5, 0.1, 0.5);
+        // Light fixture geometry (fluorescent tube)
+        const fixtureGeo = new THREE.BoxGeometry(1.8, 0.08, 0.4);
+        const isDim = random() > 0.9;
         const fixtureMat = new THREE.MeshStandardMaterial({
           color: 0xffffff,
-          emissive: 0xffffee,
-          emissiveIntensity: random() > 0.9 ? 0.3 : 1.0, // Some dim/flickering
+          emissive: isDim ? 0x666644 : 0xffffcc,
+          emissiveIntensity: isDim ? 0.5 : 2.0,
         });
         const fixture = new THREE.Mesh(fixtureGeo, fixtureMat);
         fixture.position.set(x, wallHeight - 0.05, z);
         this.mesh.add(fixture);
         
-        // Actual light source
-        const light = new THREE.PointLight(0xfff8dc, 0.5, 12, 2);
-        light.position.set(x, wallHeight - 0.2, z);
-        light.castShadow = false; // Too many for shadows
+        // Actual light source - warm fluorescent color
+        const light = new THREE.PointLight(0xfff4d6, isDim ? 0.3 : 1.2, 15, 1.5);
+        light.position.set(x, wallHeight - 0.3, z);
+        light.castShadow = false; // Performance
         this.mesh.add(light);
       }
     }

@@ -112,19 +112,19 @@ export class TouchControls {
           this.joystickPos.y = touch.clientY;
         }
         
-        // Normalize to -1 to 1
+        // Normalize to -1 to 1 (invert Z so up = forward)
         this.input.moveX = (this.joystickPos.x - this.joystickCenter.x) / this.joystickMaxDist;
-        this.input.moveZ = (this.joystickPos.y - this.joystickCenter.y) / this.joystickMaxDist;
+        this.input.moveZ = -(this.joystickPos.y - this.joystickCenter.y) / this.joystickMaxDist;
       }
       
-      // Look movement
+      // Look movement (natural direction - drag right = look right, drag up = look up)
       if (touch.identifier === this.lookTouchId) {
         e.preventDefault();
         const dx = touch.clientX - this.lastLookPos.x;
         const dy = touch.clientY - this.lastLookPos.y;
         
-        this.input.lookX = dx * this.lookSensitivity;
-        this.input.lookY = dy * this.lookSensitivity;
+        this.input.lookX = -dx * this.lookSensitivity;  // Inverted for natural feel
+        this.input.lookY = -dy * this.lookSensitivity;  // Inverted for natural feel
         
         this.lastLookPos = { x: touch.clientX, y: touch.clientY };
       }
