@@ -18,13 +18,9 @@ export class World {
     this.scene = scene;
     this.config = { ...DEFAULT_CONFIG, ...config };
     
-    // Minimal ambient - let point lights do the work for realism
-    const ambient = new THREE.AmbientLight(0xfff8dc, 0.1);
+    // Bright ambient so chunks are visible
+    const ambient = new THREE.AmbientLight(0xffffff, 0.8);
     this.scene.add(ambient);
-    
-    // Hemisphere light for subtle fill (sky = ceiling color, ground = floor color)
-    const hemi = new THREE.HemisphereLight(0xd4d4c4, 0x8b7355, 0.15);
-    this.scene.add(hemi);
   }
   
   private chunkKey(coord: ChunkCoord): string {

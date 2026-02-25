@@ -59,9 +59,9 @@ class BackroomsGame {
     this.renderer.toneMappingExposure = 1.0;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     
-    // Create scene with atmospheric background
+    // Create scene - use visible yellow-ish background
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x1a1810); // Dark murky yellow-brown
+    this.scene.background = new THREE.Color(0x8b8060); // Visible tan/yellow
     
     // Initialize systems
     this.player = new Player();
@@ -112,12 +112,44 @@ class BackroomsGame {
     // Connect to multiplayer server (fails silently if not available)
     this.multiplayer.connect();
     
-    // Add realistic lighting
-    const ambientLight = new THREE.AmbientLight(0xfff8dc, 0.15);
+    // Bright ambient light so everything is visible
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
     this.scene.add(ambientLight);
     
-    // Fog for depth
-    this.scene.fog = new THREE.Fog(0x1a1810, 5, 40);
+    // Additional directional light
+    const dirLight = new THREE.DirectionalLight(0xfff8dc, 0.5);
+    dirLight.position.set(5, 10, 5);
+    this.scene.add(dirLight);
+    
+    // Light fog
+    this.scene.fog = new THREE.Fog(0x8b8060, 20, 60);
+    
+    // Add visible test floor using BasicMaterial (always visible)
+    const testFloorGeo = new THREE.PlaneGeometry(200, 200);
+    const testFloorMat = new THREE.MeshBasicMaterial({ 
+      color: 0x8b7355, 
+      side: THREE.DoubleSide 
+    });
+    const testFloor = new THREE.Mesh(testFloorGeo, testFloorMat);
+    testFloor.rotation.x = -Math.PI / 2;
+    testFloor.position.y = -0.01;
+    this.scene.add(testFloor);
+    
+    // Test ceiling
+    const testCeiling = new THREE.Mesh(
+      new THREE.PlaneGeometry(200, 200),
+      new THREE.MeshBasicMaterial({ color: 0xd4d4c4, side: THREE.DoubleSide })
+    );
+    testCeiling.rotation.x = Math.PI / 2;
+    testCeiling.position.y = 3;
+    this.scene.add(testCeiling);
+    
+    // Bright red cube right in front of player
+    const cubeGeo = new THREE.BoxGeometry(1, 1, 1);
+    const cubeMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const cube = new THREE.Mesh(cubeGeo, cubeMat);
+    cube.position.set(0, 0.5, 5);
+    this.scene.add(cube);
     
     // Force initial world generation (procedural chunks)
     this.world.forceUpdate(this.player.position);
