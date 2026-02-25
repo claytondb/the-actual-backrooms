@@ -12,21 +12,21 @@ import { Multiplayer } from './Multiplayer';
 import { TouchControls } from './TouchControls';
 
 class BackroomsGame {
-  private renderer: THREE.WebGLRenderer;
-  private scene: THREE.Scene;
-  private world: World;
-  private player: Player;
-  private multiplayer: Multiplayer;
+  private renderer!: THREE.WebGLRenderer;
+  private scene!: THREE.Scene;
+  private world!: World;
+  private player!: Player;
+  private multiplayer!: Multiplayer;
   private touchControls: TouchControls | null = null;
   
   private clock = new THREE.Clock();
   private isRunning = false;
   
   // HUD elements
-  private coordX: HTMLElement;
-  private coordY: HTMLElement;
-  private coordZ: HTMLElement;
-  private playerCount: HTMLElement;
+  private coordX!: HTMLElement;
+  private coordY!: HTMLElement;
+  private coordZ!: HTMLElement;
+  private playerCount!: HTMLElement;
   
   // Audio
   private audioContext: AudioContext | null = null;
@@ -41,7 +41,7 @@ class BackroomsGame {
     const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
     if (!gl) {
       alert('WebGL not supported on this device');
-      return;
+      throw new Error('WebGL not supported');
     }
     
     // Setup renderer
