@@ -2,7 +2,10 @@
 
 An infinite procedural liminal space exploration game inspired by Kane Pixels' Backrooms series.
 
-![The Actual Backrooms](https://img.shields.io/badge/status-in%20development-yellow)
+![Status](https://img.shields.io/badge/status-in%20development-yellow)
+![Platform](https://img.shields.io/badge/platform-Web%20%7C%20Mobile-green)
+
+**▶️ [Play Now](https://claytondb.github.io/the-actual-backrooms/)**
 
 ## Features
 
@@ -14,9 +17,14 @@ An infinite procedural liminal space exploration game inspired by Kane Pixels' B
 
 ## Controls
 
+### Desktop
 - **WASD** - Move
 - **Mouse** - Look around
 - **Shift** - Run
+
+### Mobile
+- **Left Joystick** - Move
+- **Right Side** - Touch and drag to look around
 
 ## Technical Architecture
 
