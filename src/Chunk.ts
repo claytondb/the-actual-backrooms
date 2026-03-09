@@ -6,6 +6,7 @@
 import * as THREE from 'three';
 import { createNoise2D } from 'simplex-noise';
 import type { ChunkCoord, WorldConfig } from './types';
+import { FlickeringLight } from './FlickeringLight';
 
 // Seeded random number generator
 function seededRandom(seed: number): () => number {
@@ -284,25 +285,39 @@ export class Chunk {
         // Light fixture geometry (fluorescent tube)
         const fixtureGeo = new THREE.BoxGeometry(1.8, 0.08, 0.4);
         const isDim = random() > 0.9;
+        const baseIntensity = isDim ? 0.3 : 1.2;
+        const baseEmissive = isDim ? 0.5 : 2.0;
+        
         const fixtureMat = new THREE.MeshStandardMaterial({
           color: 0xffffff,
           emissive: isDim ? 0x666644 : 0xffffcc,
-          emissiveIntensity: isDim ? 0.5 : 2.0,
+          emissiveIntensity: baseEmissive,
         });
         const fixture = new THREE.Mesh(fixtureGeo, fixtureMat);
         fixture.position.set(x, wallHeight - 0.05, z);
         this.mesh.add(fixture);
         
         // Actual light source - warm fluorescent color
-        const light = new THREE.PointLight(0xfff4d6, isDim ? 0.3 : 1.2, 15, 1.5);
+        const light = new THREE.PointLight(0xfff4d6, baseIntensity, 15, 1.5);
         light.position.set(x, wallHeight - 0.3, z);
         light.castShadow = false; // Performance
         this.mesh.add(light);
+        
+        // Register for flickering effect
+        FlickeringLight.register(light, fixture, {
+          baseIntensity,
+          baseEmissive,
+          flickerChance: isDim ? 0.15 : 0.05, // Dim lights flicker more
+          isDim,
+        });
       }
     }
   }
   
   dispose(): void {
+    // Unregister flickering lights before disposal
+    FlickeringLight.unregisterChunk(this.mesh);
+    
     this.mesh.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         child.geometry.dispose();

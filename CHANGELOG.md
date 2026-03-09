@@ -2,6 +2,24 @@
 
 All notable changes to The Actual Backrooms.
 
+## [0.3.0] - 2026-03-09
+
+### Added
+- **Flickering Lights** - Realistic fluorescent light flickering effect
+  - Random subtle intensity variations
+  - Occasional rapid flickers
+  - Rare longer "dying light" sequences
+  - Dim lights flicker more frequently
+- **FlickeringLight Module** - Centralized light management system (11 tests)
+
+### Technical
+- `src/FlickeringLight.ts` - Static light manager with registration and update system
+- `src/FlickeringLight.test.ts` - Unit tests for flickering behavior
+- Chunk integration for automatic light registration/cleanup
+- 51 total tests (up from 40)
+
+---
+
 ## [0.2.1] - 2026-03-09
 
 ### Added

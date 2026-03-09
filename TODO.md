@@ -1,6 +1,6 @@
 # The Actual Backrooms - Task List
 
-Last updated: 2026-03-09
+Last updated: 2026-03-09 (v0.3.0)
 
 ## ✅ Completed
 
@@ -17,9 +17,12 @@ Last updated: 2026-03-09
 - [x] GitHub Pages deployment
 
 ### Testing & Documentation
-- [x] Unit testing with Vitest (40 tests) - 2026-03-09
+- [x] Unit testing with Vitest (51 tests) - 2026-03-09
 - [x] README with controls and features
 - [x] CHANGELOG tracking releases
+
+### Atmosphere (v0.3.0)
+- [x] **Flickering lights effect** - Realistic fluorescent flickering with subtle variations, rapid flickers, and rare "dying light" sequences
 
 ---
 
@@ -37,7 +40,6 @@ Last updated: 2026-03-09
 ### 2. Atmosphere Improvements
 **Priority:** MEDIUM
 
-- [ ] Flickering lights effect
 - [ ] Light pooling (brighter directly under lights)
 - [ ] Dust particles in air
 - [ ] Occasional distant sounds (footsteps, door creaking)
@@ -84,7 +86,7 @@ Last updated: 2026-03-09
 
 ## 📊 Stats
 
-- **Version:** 0.2.0
-- **Tests:** 40 passing
+- **Version:** 0.3.0
+- **Tests:** 51 passing
 - **Build:** Clean ✅
 - **Platforms:** Web (desktop + mobile)

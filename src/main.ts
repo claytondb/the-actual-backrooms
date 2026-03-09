@@ -10,6 +10,7 @@ import { World } from './World';
 import { Player } from './Player';
 import { Multiplayer } from './Multiplayer';
 import { TouchControls } from './TouchControls';
+import { FlickeringLight } from './FlickeringLight';
 
 class BackroomsGame {
   private renderer!: THREE.WebGLRenderer;
@@ -215,6 +216,9 @@ class BackroomsGame {
     
     // Update world (load/unload chunks)
     this.world.update(this.player.position);
+    
+    // Update flickering lights
+    FlickeringLight.update(deltaTime);
     
     // Send position to multiplayer
     this.multiplayer.sendPosition(
