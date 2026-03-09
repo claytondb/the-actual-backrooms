@@ -2,6 +2,19 @@
 
 All notable changes to The Actual Backrooms.
 
+## [0.2.1] - 2026-03-09
+
+### Added
+- **Unit Testing** - Vitest test framework with 40 tests
+- **Utility Module** - Extracted pure functions for testability
+- **TODO.md** - Task tracking for future development
+
+### Technical
+- `src/utils.ts` - Reusable utility functions (seededRandom, hashCoords, worldToChunk, etc.)
+- `src/utils.test.ts` - Comprehensive unit tests for all utilities
+- `vitest.config.ts` - Test configuration
+- npm scripts for testing (test, test:watch, test:coverage)
+
 ## [0.2.0] - 2026-02-24
 
 ### Added
